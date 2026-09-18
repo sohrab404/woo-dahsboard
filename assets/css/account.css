@@ -1,0 +1,1634 @@
+/* Woodesh Account Panel — glassmorphism customer dashboard.
+   Visual language mirrors the admin panel. The panel is self-contained so host
+   themes can't fight over colors. Glass tokens are defined per mode here; the
+   base palette is printed inline by the plugin (settings-driven). */
+
+.sb-account,
+.sb-account *,
+.sb-account *::before,
+.sb-account *::after {
+	box-sizing: border-box;
+}
+
+/* ---- Glass tokens per mode ---- */
+.sb-account[data-sb-mode="dark"] {
+	--sb-glass: rgba(255, 255, 255, 0.05);
+	--sb-glass-strong: rgba(255, 255, 255, 0.09);
+	--sb-glass-border: rgba(255, 255, 255, 0.09);
+	--sb-glass-hover: rgba(255, 255, 255, 0.08);
+	--acc-blob-1: rgba(var(--sb-accent-rgb), 0.20);
+	--acc-blob-2: rgba(var(--sb-info-rgb), 0.12);
+}
+
+.sb-account[data-sb-mode="light"] {
+	--sb-glass: rgba(255, 255, 255, 0.68);
+	--sb-glass-strong: rgba(255, 255, 255, 0.85);
+	--sb-glass-border: rgba(15, 18, 35, 0.08);
+	--sb-glass-hover: rgba(255, 255, 255, 0.9);
+	--acc-blob-1: rgba(var(--sb-accent-rgb), 0.14);
+	--acc-blob-2: rgba(var(--sb-info-rgb), 0.10);
+}
+
+/* ---- Panel shell ---- */
+.sb-account {
+	--sb-radius: 18px;
+	position: relative;
+	/* Break out of the theme's content container — edge-to-edge, full-page panel. */
+	width: 100vw;
+	max-width: 100vw;
+	margin-inline: calc(50% - 50vw);
+	margin-block: 0;
+	min-height: 100vh;
+	background:
+		radial-gradient(760px 560px at 88% -12%, var(--acc-blob-1), transparent 62%),
+		radial-gradient(820px 600px at -6% 104%, var(--acc-blob-2), transparent 62%),
+		var(--sb-bg);
+	color: var(--sb-text);
+	font-family: var(--sb-font, Tahoma, "Segoe UI", system-ui, sans-serif);
+	line-height: 1.7;
+	border-radius: 0;
+	padding: 22px clamp(16px, 4vw, 48px) 48px;
+	border-block: 1px solid var(--sb-glass-border);
+	box-shadow: var(--sb-shadow);
+	animation: sb-acc-bg-drift 22s ease-in-out infinite alternate;
+}
+
+/* Centered inner frame for very wide screens */
+.sb-account__frame {
+	max-width: 1560px;
+	margin-inline: auto;
+}
+
+.sb-account[hidden],
+.sb-account [hidden] {
+	display: none !important;
+}
+
+/* Date + reviews KPI extras */
+.sb-account__date-j {
+	direction: ltr;
+}
+
+.sb-account__date-g {
+	margin: 8px 0 0;
+	color: var(--sb-muted);
+	font-size: 12px;
+}
+
+.sb-account__kpi--reviews .sb-account__kpi-value {
+	color: var(--sb-success);
+}
+
+@keyframes sb-acc-bg-drift {
+	from { background-position: 0% 0%, 100% 100%, 0 0; }
+	to { background-position: 4% 6%, 92% 90%, 0 0; }
+}
+
+.sb-account *,
+.sb-account *::before,
+.sb-account *::after {
+	box-sizing: border-box;
+}
+
+/* ---- Entrance motion (staggered, light) ---- */
+@keyframes sb-acc-in {
+	from { opacity: 0; transform: translateY(16px) scale(0.985); }
+	to { opacity: 1; transform: none; }
+}
+
+.sb-account__side,
+.sb-account__hero {
+	animation: sb-acc-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+/* Floating drawer toggle — mobile only (the site header belongs to the theme) */
+.sb-account__fab {
+	display: none;
+	position: fixed;
+	bottom: 22px;
+	inset-inline-start: 22px;
+	z-index: 99970;
+	width: 54px;
+	height: 54px;
+	border-radius: 18px;
+	border: 1px solid var(--sb-glass-border);
+	background: linear-gradient(135deg, var(--sb-accent), var(--sb-accent-2));
+	color: #fff;
+	font-size: 18px;
+	cursor: pointer;
+	box-shadow: var(--sb-glow);
+	align-items: center;
+	justify-content: center;
+	transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.sb-account__fab:hover {
+	transform: translateY(-3px) scale(1.04);
+}
+
+.sb-account__fab.is-active {
+	transform: rotate(90deg);
+}
+
+.sb-account__kpi,
+.sb-account__card {
+	animation: sb-acc-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.sb-account__kpis > :nth-child(1) { animation-delay: 0.10s; }
+.sb-account__kpis > :nth-child(2) { animation-delay: 0.16s; }
+.sb-account__kpis > :nth-child(3) { animation-delay: 0.22s; }
+.sb-account__kpis > :nth-child(4) { animation-delay: 0.28s; }
+.sb-account__kpis > :nth-child(5) { animation-delay: 0.34s; }
+.sb-account__kpis > :nth-child(6) { animation-delay: 0.40s; }
+
+.sb-account__grid > :nth-child(1) { animation-delay: 0.18s; }
+.sb-account__grid > :nth-child(2) { animation-delay: 0.26s; }
+.sb-account__grid > :nth-child(3) { animation-delay: 0.34s; }
+.sb-account__grid > :nth-child(4) { animation-delay: 0.42s; }
+.sb-account__grid > :nth-child(5) { animation-delay: 0.50s; }
+.sb-account__grid > :nth-child(n+6) { animation-delay: 0.58s; }
+
+/* ============ HEADER (glass, sticky) ============ */
+.sb-account__top {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 14px;
+	flex-wrap: wrap;
+	margin-bottom: 16px;
+	padding: 10px 16px;
+	background: var(--sb-glass-strong);
+	border: 1px solid var(--sb-glass-border);
+	border-radius: var(--sb-radius);
+	position: sticky;
+	top: 10px;
+	z-index: 40;
+	backdrop-filter: blur(16px) saturate(150%);
+	-webkit-backdrop-filter: blur(16px) saturate(150%);
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.18);
+	animation: sb-acc-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+.sb-account__brand {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.sb-account__brand img.sb-account__brand-img,
+.sb-account__brand > img {
+	width: 38px;
+	height: 38px;
+	border-radius: 11px;
+	object-fit: contain;
+	display: block;
+}
+
+.sb-account__brand-logo--dv {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 38px;
+	height: 38px;
+	border-radius: 11px;
+	background: linear-gradient(135deg, var(--sb-accent), var(--sb-accent-2));
+	color: #fff;
+	box-shadow: var(--sb-glow);
+	font-family: "JetBrains Mono", "Fira Code", Consolas, "Courier New", monospace;
+	font-weight: 700;
+	font-size: 14px;
+	direction: ltr;
+}
+
+.sb-account__brand strong {
+	font-size: 15px;
+}
+
+.sb-account__top-actions {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.sb-account__mode,
+.sb-account__burger {
+	background: var(--sb-glass);
+	border: 1px solid var(--sb-glass-border);
+	color: var(--sb-text);
+	border-radius: 11px;
+	cursor: pointer;
+	transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.sb-account__mode {
+	padding: 8px 12px;
+	font-size: 15px;
+	line-height: 1;
+}
+
+.sb-account__burger {
+	display: none;
+	flex-direction: column;
+	gap: 4px;
+	padding: 11px 10px;
+}
+
+.sb-account__burger span {
+	display: block;
+	width: 16px;
+	height: 2px;
+	border-radius: 2px;
+	background: var(--sb-text);
+}
+
+.sb-account__mode:hover,
+.sb-account__burger:hover {
+	border-color: var(--sb-accent);
+	transform: translateY(-1px);
+	box-shadow: var(--sb-glow);
+}
+
+.sb-account__user {
+	position: relative;
+}
+
+.sb-account__user-btn {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	background: var(--sb-glass);
+	border: 1px solid var(--sb-glass-border);
+	color: var(--sb-text);
+	border-radius: 12px;
+	padding: 5px 12px 5px 6px;
+	cursor: pointer;
+	font: inherit;
+	transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.sb-account__user-btn:hover {
+	border-color: var(--sb-accent);
+	box-shadow: var(--sb-glow);
+}
+
+.sb-account__avatar {
+	width: 34px;
+	height: 34px;
+	border-radius: 999px;
+	display: block;
+	border: 2px solid rgba(var(--sb-accent-rgb), 0.55);
+}
+
+.sb-account__user-name {
+	font-size: 13px;
+	font-weight: 700;
+	white-space: nowrap;
+}
+
+.sb-account__caret {
+	color: var(--sb-muted);
+	font-size: 11px;
+	transition: transform 0.2s ease;
+}
+
+.sb-account__user-btn[aria-expanded="true"] .sb-account__caret {
+	transform: rotate(180deg);
+}
+
+.sb-account__user-menu {
+	position: absolute;
+	top: calc(100% + 8px);
+	inset-inline-start: auto;
+	inset-inline-end: 0;
+	min-width: 190px;
+	background: var(--sb-glass-strong);
+	border: 1px solid var(--sb-glass-border);
+	border-radius: 14px;
+	padding: 8px;
+	box-shadow: var(--sb-shadow);
+	backdrop-filter: blur(18px) saturate(150%);
+	-webkit-backdrop-filter: blur(18px) saturate(150%);
+	z-index: 60;
+	display: flex;
+	flex-direction: column;
+	animation: sb-account-pop 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* hidden attribute must always win over display:flex */
+.sb-account__user-menu[hidden] {
+	display: none;
+}
+
+@keyframes sb-account-pop {
+	from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+	to { opacity: 1; transform: none; }
+}
+
+.sb-account__user-menu a {
+	color: var(--sb-text) !important;
+	text-decoration: none;
+	font-size: 13px;
+	padding: 9px 12px;
+	border-radius: 9px;
+	display: flex;
+	align-items: center;
+	gap: 9px;
+}
+
+.sb-account__user-menu a::before {
+	font-family: "Font Awesome 6 Free";
+	font-weight: 900;
+	font-size: 13px;
+	color: var(--sb-muted);
+}
+
+.sb-account__user-menu a[href*="edit-account"]::before {
+	content: "\f2bd";
+}
+
+.sb-account__user-menu a[href*="customer-logout"]::before {
+	content: "\f2f5";
+	color: var(--sb-danger);
+}
+
+.sb-account__user-menu a:hover {
+	background: var(--sb-glass-hover);
+}
+
+.sb-account__user-logout {
+	color: var(--sb-danger) !important;
+}
+
+/* ============ SHELL ============ */
+.sb-account__shell {
+	display: grid;
+	grid-template-columns: 252px minmax(0, 1fr);
+	gap: 18px;
+	align-items: start;
+}
+
+.sb-account__side {
+	background: var(--sb-glass);
+	border: 1px solid var(--sb-glass-border);
+	border-radius: var(--sb-radius);
+	padding: 10px;
+	position: sticky;
+	top: 20px;
+	backdrop-filter: blur(16px) saturate(150%);
+	-webkit-backdrop-filter: blur(16px) saturate(150%);
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.14);
+}
+
+.sb-account__nav ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.sb-account__nav a {
+	display: flex;
+	align-items: center;
+	gap: 11px;
+	color: var(--sb-muted);
+	text-decoration: none;
+	font-size: 13.5px;
+	font-weight: 600;
+	padding: 11px 13px;
+	border-radius: 11px;
+	position: relative;
+	transition: background 0.16s ease, color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+}
+
+.sb-account__nav a:hover {
+	color: var(--sb-text);
+	background: var(--sb-glass-hover);
+	transform: translateX(-3px);
+}
+
+.sb-account__nav-icon {
+	display: inline-flex;
+	width: 22px;
+	height: 22px;
+	align-items: center;
+	justify-content: center;
+	flex: 0 0 auto;
+}
+
+.sb-account__nav-icon svg,
+.sb-account__nav-icon i {
+	width: 19px;
+	height: 19px;
+	font-size: 16px;
+	text-align: center;
+}
+
+/* Active item — gradient pill like the admin panel */
+.sb-account__nav li.is-active a {
+	background: linear-gradient(135deg, var(--sb-accent), var(--sb-accent-2));
+	color: #fff;
+	box-shadow: var(--sb-glow);
+}
+
+.sb-account__nav li.is-active a::after {
+	content: "";
+	position: absolute;
+	inset-inline-end: 10px;
+	width: 6px;
+	height: 6px;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.85);
+}
+
+.sb-account__main {
+	min-width: 0;
+}
+
+/* WC content area reset inside the panel */
+.sb-account__main .woocommerce-MyAccount-content {
+	float: none;
+	width: 100%;
+	padding: 0;
+	border: 0;
+	margin: 0;
+}
+
+/* ============ DASHBOARD ============ */
+.sb-account__dash {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	position: relative;
+}
+
+/* Dot pattern layer (Magic UI grid dots) */
+.sb-account__dash::before {
+	content: "";
+	position: absolute;
+	inset: -8px 0 auto 0;
+	height: 220px;
+	background-image: radial-gradient(rgba(var(--sb-accent-rgb), 0.18) 1px, transparent 1px);
+	background-size: 22px 22px;
+	opacity: 0.5;
+	-webkit-mask-image: linear-gradient(180deg, #000, transparent);
+	mask-image: linear-gradient(180deg, #000, transparent);
+	pointer-events: none;
+	z-index: 0;
+}
+
+.sb-account__dash > * {
+	position: relative;
+	z-index: 1;
+}
+
+.sb-account__hero {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 16px;
+	flex-wrap: wrap;
+	background: linear-gradient(135deg, rgba(var(--sb-accent-rgb), 0.22), rgba(var(--sb-accent-rgb), 0.05) 45%, transparent 75%), var(--sb-glass-strong);
+	border: 1px solid rgba(var(--sb-accent-rgb), 0.28);
+	border-radius: 20px;
+	padding: 26px 28px;
+	position: relative;
+	overflow: hidden;
+	backdrop-filter: blur(14px) saturate(140%);
+	-webkit-backdrop-filter: blur(14px) saturate(140%);
+}
+
+.sb-account__hero::after {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	height: 1px;
+	background: linear-gradient(90deg, transparent, rgba(var(--sb-accent-rgb), 0.65), rgba(var(--sb-info-rgb), 0.35), transparent);
+	background-size: 200% 100%;
+	animation: sb-account-beam 6s linear infinite;
+}
+
+@keyframes sb-account-beam {
+	0% { background-position: 100% 0; }
+	100% { background-position: -100% 0; }
+}
+
+.sb-account__hero h2 {
+	margin: 0 0 5px;
+	font-size: 23px;
+	letter-spacing: -0.02em;
+	font-weight: 800;
+}
+
+.sb-account__hero p {
+	margin: 0;
+	font-size: 13px;
+}
+
+.sb-account__hero-since {
+	text-align: center;
+	background: var(--sb-glass);
+	border: 1px solid var(--sb-glass-border);
+	border-radius: 14px;
+	padding: 10px 20px;
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	font-size: 12px;
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+}
+
+.sb-account__hero-since strong {
+	font-size: 16px;
+	color: var(--sb-accent-2);
+}
+
+/* Bento KPI grid */
+.sb-account__kpis {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 14px;
+}
+
+.sb-account__kpi {
+	background: linear-gradient(180deg, var(--sb-sheen), transparent 40%), var(--sb-glass);
+	border: 1px solid var(--sb-glass-border);
+	border-radius: var(--sb-radius);
+	padding: 16px 18px;
+	position: relative;
+	overflow: hidden;
+	backdrop-filter: blur(14px) saturate(140%);
+	-webkit-backdrop-filter: blur(14px) saturate(140%);
+	transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.sb-account__kpi:hover {
+	transform: translateY(-3px);
+	border-color: rgba(var(--sb-accent-rgb), 0.4);
+	box-shadow: var(--sb-glow);
+}
+
+.sb-account__kpi--featured {
+	grid-row: span 2;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	min-height: 190px;
+}
+
+.sb-account__kpi--featured::after {
+	content: "";
+	position: absolute;
+	inset: -1px;
+	border-radius: inherit;
+	padding: 1px;
+	background: conic-gradient(from 0deg, transparent 0 30%, rgba(var(--sb-accent-rgb), 0.9) 50%, transparent 70% 100%);
+	-webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+	-webkit-mask-composite: xor;
+	mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+	mask-composite: exclude;
+	animation: sb-account-spin 5s linear infinite;
+	pointer-events: none;
+}
+
+@keyframes sb-account-spin {
+	to { transform: rotate(1turn); }
+}
+
+.sb-account__kpi-label {
+	margin: 0 0 8px;
+	color: var(--sb-muted);
+	font-size: 12px;
+	display: flex;
+	align-items: center;
+	gap: 7px;
+}
+
+.sb-account__kpi-label::before {
+	content: "";
+	width: 7px;
+	height: 7px;
+	border-radius: 999px;
+	background: linear-gradient(135deg, var(--sb-accent), var(--sb-accent-2));
+	box-shadow: 0 0 8px rgba(var(--sb-accent-rgb), 0.7);
+}
+
+.sb-account__kpi-value {
+	margin: 0;
+	font-size: 26px;
+	font-weight: 800;
+	letter-spacing: -0.03em;
+}
+
+.sb-account__kpi--featured .sb-account__kpi-value {
+	font-size: 36px;
+	background: linear-gradient(120deg, var(--sb-accent-2), var(--sb-accent));
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.sb-account__kpi-meta {
+	margin-top: 10px;
+	font-size: 11.5px;
+}
+
+/* Magic card glow (same as the admin panel) */
+.sb-magic::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	background: radial-gradient(340px circle at var(--mx, 50%) var(--my, 50%), rgba(var(--sb-accent-rgb), 0.14), transparent 55%);
+	opacity: 0;
+	transition: opacity 0.25s ease;
+	pointer-events: none;
+	z-index: 0;
+}
+
+.sb-magic:hover::before {
+	opacity: 1;
+}
+
+.sb-magic > * {
+	position: relative;
+	z-index: 1;
+}
+
+/* Cards grid */
+.sb-account__grid {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 14px;
+}
+
+.sb-account__card {
+	background: var(--sb-glass);
+	border: 1px solid var(--sb-glass-border);
+	border-radius: var(--sb-radius);
+	padding: 18px 20px;
+	position: relative;
+	overflow: hidden;
+	min-height: 120px;
+	backdrop-filter: blur(14px) saturate(140%);
+	-webkit-backdrop-filter: blur(14px) saturate(140%);
+	transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sb-account__card:hover {
+	border-color: rgba(var(--sb-accent-rgb), 0.35);
+	box-shadow: var(--sb-glow);
+}
+
+.sb-account__card--orders {
+	grid-column: 1 / -1;
+}
+
+.sb-account__card-head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	flex-wrap: wrap;
+	margin-bottom: 12px;
+}
+
+.sb-account__card-head h3 {
+	margin: 0;
+	font-size: 15px;
+	display: flex;
+	align-items: center;
+	gap: 9px;
+}
+
+.sb-account__card-head h3::before {
+	font-family: "Font Awesome 6 Free";
+	font-weight: 900;
+	content: "\f005";
+	font-size: 12px;
+	width: 26px;
+	height: 26px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 8px;
+	background: linear-gradient(135deg, rgba(var(--sb-accent-rgb), 0.22), rgba(var(--sb-accent-rgb), 0.07));
+	color: var(--sb-accent-2);
+}
+
+.sb-account__more {
+	color: var(--sb-accent-2);
+	text-decoration: none;
+	font-size: 12.5px;
+	font-weight: 700;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+.sb-account__more::after {
+	font-family: "Font Awesome 6 Free";
+	font-weight: 900;
+	content: "\f104"; /* angle-left */
+	font-size: 11px;
+}
+
+.sb-account__more:hover {
+	text-decoration: none;
+	opacity: 0.85;
+}
+
+/* Recent orders */
+.sb-account__orders {
+	display: flex;
+	flex-direction: column;
+}
+
+.sb-account__order {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	flex-wrap: wrap;
+	padding: 12px 10px;
+	margin: 0 -10px;
+	border-bottom: 1px solid var(--sb-glass-border);
+	font-size: 13px;
+	border-radius: 10px;
+	transition: background 0.16s ease;
+}
+
+.sb-account__order:hover {
+	background: var(--sb-glass-hover);
+}
+
+.sb-account__order:last-child {
+	border-bottom: 0;
+}
+
+.sb-account__order-meta {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.sb-account__status {
+	display: inline-block;
+	padding: 3px 11px;
+	border-radius: 999px;
+	font-size: 12px;
+	background: rgba(var(--sb-info-rgb), 0.12);
+	color: var(--sb-info);
+}
+
+.sb-account__status.is-completed,
+.sb-account__status.is-processing {
+	background: rgba(var(--sb-success-rgb), 0.12);
+	color: var(--sb-success);
+}
+
+.sb-account__status.is-cancelled,
+.sb-account__status.is-failed,
+.sb-account__status.is-refunded {
+	background: rgba(var(--sb-danger-rgb), 0.12);
+	color: var(--sb-danger);
+}
+
+.sb-account__status.is-on-hold,
+.sb-account__status.is-pending {
+	background: rgba(var(--sb-warn-rgb), 0.12);
+	color: var(--sb-warn);
+}
+
+/* Status mini grid */
+.sb-account__mini-grid {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 10px;
+}
+
+.sb-account__mini {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 5px;
+	text-align: center;
+	background: var(--sb-glass);
+	border: 1px solid var(--sb-glass-border);
+	border-radius: 13px;
+	padding: 13px 8px;
+	font-size: 12px;
+	transition: border-color 0.18s ease, transform 0.18s ease;
+}
+
+.sb-account__mini:hover {
+	border-color: rgba(var(--sb-accent-rgb), 0.45);
+	transform: translateY(-2px);
+}
+
+.sb-account__mini strong {
+	font-size: 20px;
+}
+
+.sb-account__mini-icon {
+	display: inline-flex;
+	width: 32px;
+	height: 32px;
+	align-items: center;
+	justify-content: center;
+	border-radius: 10px;
+	background: rgba(var(--sb-info-rgb), 0.12);
+	color: var(--sb-info);
+}
+
+.sb-account__mini-icon svg,
+.sb-account__mini-icon i {
+	font-size: 14px;
+}
+
+.sb-account__mini.is-completed .sb-account__mini-icon,
+.sb-account__mini.is-processing .sb-account__mini-icon {
+	background: rgba(var(--sb-success-rgb), 0.12);
+	color: var(--sb-success);
+}
+
+.sb-account__mini.is-cancelled .sb-account__mini-icon,
+.sb-account__mini.is-refunded .sb-account__mini-icon {
+	background: rgba(var(--sb-danger-rgb), 0.12);
+	color: var(--sb-danger);
+}
+
+.sb-account__mini.is-on-hold .sb-account__mini-icon,
+.sb-account__mini.is-pending .sb-account__mini-icon {
+	background: rgba(var(--sb-warn-rgb), 0.12);
+	color: var(--sb-warn);
+}
+
+/* Messages */
+.sb-account__messages {
+	display: flex;
+	flex-direction: column;
+	gap: 9px;
+}
+
+.sb-account__message {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	background: var(--sb-glass);
+	border: 1px solid var(--sb-glass-border);
+	border-radius: 12px;
+	padding: 10px 13px;
+	font-size: 13px;
+}
+
+.sb-account__message p {
+	margin: 0;
+	flex: 1;
+}
+
+.sb-account__message-dot {
+	font-family: "Font Awesome 6 Free";
+	font-weight: 900;
+	font-size: 14px;
+	color: var(--sb-info);
+	flex: 0 0 auto;
+}
+
+.sb-account__message-dot::before {
+	content: "\f0a1"; /* bullhorn */
+}
+
+.sb-account__message.is-warn .sb-account__message-dot {
+	color: var(--sb-warn);
+}
+
+.sb-account__message.is-warn .sb-account__message-dot::before {
+	content: "\f071"; /* triangle-exclamation */
+}
+
+.sb-account__message.is-ok .sb-account__message-dot {
+	color: var(--sb-success);
+}
+
+.sb-account__message.is-ok .sb-account__message-dot::before {
+	content: "\f058"; /* circle-check */
+}
+
+/* Quick access */
+.sb-account__quick {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 10px;
+}
+
+.sb-account__quick-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 9px;
+	text-align: center;
+	color: var(--sb-text) !important;
+	text-decoration: none;
+	background: var(--sb-glass);
+	border: 1px solid var(--sb-glass-border);
+	border-radius: 13px;
+	padding: 15px 8px;
+	font-size: 12.5px;
+	font-weight: 600;
+	transition: border-color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.sb-account__quick-item:hover {
+	border-color: rgba(var(--sb-accent-rgb), 0.5);
+	transform: translateY(-3px);
+	box-shadow: var(--sb-glow);
+}
+
+.sb-account__quick-icon {
+	display: inline-flex;
+	width: 40px;
+	height: 40px;
+	align-items: center;
+	justify-content: center;
+	border-radius: 12px;
+	background: linear-gradient(135deg, rgba(var(--sb-accent-rgb), 0.22), rgba(var(--sb-accent-rgb), 0.06));
+	color: var(--sb-accent-2);
+	font-size: 16px;
+}
+
+/* Orders view pager */
+.sb-account__pager {
+	margin-top: 14px;
+}
+
+.sb-account__pager ul.page-numbers {
+	list-style: none;
+	display: flex;
+	gap: 6px;
+	margin: 0;
+	padding: 0;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+.sb-account__pager .page-numbers {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 38px;
+	height: 38px;
+	padding: 0 10px;
+	border-radius: 10px;
+	background: var(--sb-glass);
+	border: 1px solid var(--sb-glass-border);
+	color: var(--sb-text) !important;
+	text-decoration: none;
+	font-size: 13px;
+}
+
+.sb-account__pager .page-numbers.current {
+	background: linear-gradient(135deg, var(--sb-accent), var(--sb-accent-2));
+	color: #fff !important;
+	border-color: transparent;
+	box-shadow: var(--sb-glow);
+}
+
+.sb-account__pager .page-numbers:hover:not(.current) {
+	border-color: var(--sb-accent);
+}
+
+/* ============ TICKETS ============ */
+.sb-ticket-form {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.sb-ticket-form .salesbin-input {
+	width: 100%;
+}
+
+.sb-ticket-pages {
+	text-align: center;
+	font-size: 12px;
+	margin: 10px 0 0;
+}
+
+.sb-account__ticket-subject {
+	color: var(--sb-text) !important;
+	text-decoration: none;
+	font-weight: 700;
+}
+
+.sb-account__ticket-subject:hover {
+	color: var(--sb-accent-2) !important;
+}
+
+.sb-account__ticket-status {
+	display: inline-block;
+	padding: 3px 11px;
+	border-radius: 999px;
+	font-size: 12px;
+	background: rgba(var(--sb-warn-rgb), 0.12);
+	color: var(--sb-warn);
+}
+
+.sb-account__ticket-status.is-answered {
+	background: rgba(var(--sb-success-rgb), 0.12);
+	color: var(--sb-success);
+}
+
+.sb-account__ticket-status.is-closed {
+	background: rgba(var(--sb-muted-rgb, 139, 145, 167), 0.14);
+	color: var(--sb-muted);
+}
+
+.sb-ticket-reply {
+	background: var(--sb-glass);
+	border: 1px solid var(--sb-glass-border);
+	border-radius: 13px;
+	padding: 12px 15px;
+	margin-bottom: 10px;
+}
+
+.sb-ticket-reply.is-admin {
+	border-color: rgba(var(--sb-accent-rgb), 0.4);
+	background: linear-gradient(135deg, rgba(var(--sb-accent-rgb), 0.08), var(--sb-glass));
+}
+
+.sb-ticket-reply__head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	margin-bottom: 6px;
+	font-size: 12.5px;
+}
+
+.sb-ticket-reply p {
+	margin: 0;
+	font-size: 13.5px;
+	white-space: pre-wrap;
+}
+
+/* ============ ELEMENTOR BUTTON ============ */
+.sb-el-account-wrap {
+	display: flex;
+	justify-content: center;
+}
+
+.sb-el-account {
+	--sb-el-accent: #8b5cf6;
+	--sb-el-text: inherit;
+	display: inline-flex;
+	align-items: center;
+	gap: 9px;
+	font: inherit;
+	font-size: 14px;
+	font-weight: 700;
+	text-decoration: none !important;
+	border-radius: 14px;
+	padding: 11px 22px;
+	cursor: pointer;
+	transition: transform 0.18s ease, box-shadow 0.18s ease, filter 0.18s ease;
+}
+
+.sb-el-account:hover {
+	transform: translateY(-2px);
+}
+
+.sb-el-account__icon {
+	display: inline-flex;
+	font-size: 1.15em;
+}
+
+.sb-el-account__icon svg,
+.sb-el-account__icon i {
+	width: 1.1em;
+	height: 1.1em;
+}
+
+.sb-el-account__avatar {
+	width: 30px;
+	height: 30px;
+	border-radius: 999px;
+	object-fit: cover;
+	border: 2px solid rgba(255, 255, 255, 0.55);
+}
+
+.sb-el-account--glass {
+	background: rgba(255, 255, 255, 0.08);
+	backdrop-filter: blur(14px) saturate(150%);
+	-webkit-backdrop-filter: blur(14px) saturate(150%);
+	border: 1px solid rgba(255, 255, 255, 0.18);
+	color: var(--sb-el-text, inherit);
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+	position: relative;
+	overflow: hidden;
+}
+
+.sb-el-account--glass::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: radial-gradient(120px circle at 85% 20%, color-mix(in srgb, var(--sb-el-accent) 45%, transparent), transparent 70%);
+	pointer-events: none;
+}
+
+.sb-el-account--solid {
+	background: linear-gradient(135deg, var(--sb-el-accent), color-mix(in srgb, var(--sb-el-accent) 60%, #ffffff));
+	border: none;
+	color: #fff;
+	box-shadow: 0 8px 24px color-mix(in srgb, var(--sb-el-accent) 45%, transparent);
+}
+
+.sb-el-account--outline {
+	background: transparent;
+	border: 2px solid var(--sb-el-accent);
+	color: var(--sb-el-accent);
+}
+
+.sb-el-account--minimal {
+	background: transparent;
+	border: none;
+	color: var(--sb-el-accent);
+	padding: 6px;
+	font-size: 1.25em;
+}
+
+.sb-el-account--solid .sb-el-account__text,
+.sb-el-account--outline .sb-el-account__text {
+	color: inherit;
+}
+
+/* Empty states */
+.sb-account__empty {
+	text-align: center;
+	color: var(--sb-muted);
+	padding: 22px 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+	font-size: 13px;
+	border: 1px dashed var(--sb-glass-border);
+	border-radius: 12px;
+}
+
+/* ============================================================
+   WC ENDPOINT CONTENT INSIDE THE PANEL
+   Strong scoped theming: beats theme overrides that render
+   white inputs with white text on the dark palette. Both modes
+   stay readable (light palette = dark text on white inputs).
+   ============================================================ */
+.sb-account .woocommerce-MyAccount-content table,
+.sb-account table.woocommerce-orders-table,
+.sb-account table.woocommerce-table--order-downloads {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 13px;
+	background: var(--sb-glass-strong) !important;
+	border: 1px solid var(--sb-glass-border) !important;
+	border-radius: 14px;
+	overflow: hidden;
+	backdrop-filter: blur(10px);
+	-webkit-backdrop-filter: blur(10px);
+}
+
+.sb-account .woocommerce-MyAccount-content table th,
+.sb-account .woocommerce-MyAccount-content table td,
+.sb-account table.woocommerce-orders-table th,
+.sb-account table.woocommerce-orders-table td {
+	text-align: right !important;
+	padding: 11px 12px !important;
+	border-bottom: 1px solid var(--sb-glass-border) !important;
+	color: var(--sb-text) !important;
+	background: transparent;
+	vertical-align: middle;
+}
+
+.sb-account .woocommerce-MyAccount-content table th,
+.sb-account table.woocommerce-orders-table th {
+	color: var(--sb-muted) !important;
+	font-weight: 700;
+	background: rgba(var(--sb-accent-rgb), 0.05);
+}
+
+.sb-account .woocommerce-MyAccount-content table tr:last-child td {
+	border-bottom: 0 !important;
+}
+
+/* Any form control inside the panel gets the palette — this fixes the
+   "white input, white text" issue on dark mode across themes. */
+.sb-account input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="file"]):not([type="image"]),
+.sb-account select,
+.sb-account textarea {
+	background-color: var(--sb-bg-2) !important;
+	background-image: none;
+	color: var(--sb-text) !important;
+	border: 1px solid var(--sb-border) !important;
+	border-radius: 10px !important;
+	padding: 9px 12px !important;
+	font: inherit;
+	font-size: 13.5px;
+	width: 100%;
+	box-shadow: none !important;
+	-webkit-appearance: none;
+	appearance: none;
+}
+
+.sb-account input:focus,
+.sb-account select:focus,
+.sb-account textarea:focus {
+	outline: 2px solid rgba(var(--sb-accent-rgb), 0.55) !important;
+	outline-offset: 1px;
+	border-color: var(--sb-accent) !important;
+}
+
+.sb-account input[type="checkbox"],
+.sb-account input[type="radio"] {
+	width: 16px !important;
+	height: 16px !important;
+	accent-color: var(--sb-accent);
+	padding: 0 !important;
+}
+
+.sb-account ::placeholder {
+	color: var(--sb-muted);
+	opacity: 1;
+}
+
+.sb-account label,
+.sb-account .woocommerce-form-row label,
+.sb-account legend {
+	color: var(--sb-text) !important;
+	font-size: 13px;
+	font-weight: 600;
+	display: block;
+	margin-bottom: 5px;
+}
+
+.sb-account .woocommerce-MyAccount-content p,
+.sb-account .woocommerce-MyAccount-content li,
+.sb-account .woocommerce-MyAccount-content div,
+.sb-account .woocommerce-MyAccount-content span,
+.sb-account .woocommerce-MyAccount-content address,
+.sb-account .woocommerce-MyAccount-content strong,
+.sb-account .woocommerce-MyAccount-content dl,
+.sb-account .woocommerce-MyAccount-content dt,
+.sb-account .woocommerce-MyAccount-content dd,
+.sb-account .woocommerce-MyAccount-content mark {
+	color: var(--sb-text);
+}
+
+.sb-account .woocommerce-MyAccount-content small,
+.sb-account .woocommerce-MyAccount-content time {
+	color: var(--sb-muted);
+}
+
+.sb-account .woocommerce-MyAccount-content mark {
+	background: rgba(var(--sb-accent-rgb), 0.15);
+}
+
+.sb-account address {
+	font-style: normal;
+	line-height: 2;
+}
+
+.sb-account .woocommerce-MyAccount-content .woocommerce-Address-title {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+	background: var(--sb-glass);
+	border: 1px solid var(--sb-glass-border);
+	border-radius: 12px;
+	padding: 12px 14px;
+	margin: 0 0 14px;
+}
+
+.sb-account .woocommerce-MyAccount-content .woocommerce-Address-title h3 {
+	margin: 0;
+	font-size: 14px;
+	color: var(--sb-text);
+}
+
+.sb-account .woocommerce-MyAccount-content .u-column1,
+.sb-account .woocommerce-MyAccount-content .u-column2 {
+	width: 100%;
+	max-width: none;
+	float: none;
+}
+
+/* Buttons inside WC forms — panel gradient */
+.sb-account .woocommerce-MyAccount-content .button,
+.sb-account .woocommerce-MyAccount-content button.button,
+.sb-account .woocommerce-MyAccount-content input.button,
+.sb-account .woocommerce-MyAccount-content a.button,
+.sb-account .woocommerce-MyAccount-content button[name="save_address"],
+.sb-account .woocommerce-MyAccount-content button[name="save_account_details"] {
+	background: linear-gradient(135deg, var(--sb-accent), var(--sb-accent-2)) !important;
+	border: none !important;
+	color: #fff !important;
+	border-radius: 11px !important;
+	padding: 10px 24px !important;
+	font: inherit;
+	font-size: 13.5px;
+	font-weight: 700;
+	cursor: pointer;
+	box-shadow: var(--sb-glow);
+	text-decoration: none;
+	text-shadow: none;
+}
+
+.sb-account .woocommerce-MyAccount-content a.button:hover,
+.sb-account .woocommerce-MyAccount-content button.button:hover,
+.sb-account .woocommerce-MyAccount-content button[name="save_address"]:hover,
+.sb-account .woocommerce-MyAccount-content button[name="save_account_details"]:hover {
+	filter: brightness(1.1);
+}
+
+/* WC notices */
+.sb-account .woocommerce-MyAccount-content .woocommerce-message,
+.sb-account .woocommerce-MyAccount-content .woocommerce-info,
+.sb-account .woocommerce-MyAccount-content .woocommerce-error,
+.sb-account .woocommerce-message,
+.sb-account .woocommerce-info,
+.sb-account .woocommerce-error {
+	background: var(--sb-glass-strong) !important;
+	color: var(--sb-text) !important;
+	border-radius: 12px !important;
+	border-top-color: var(--sb-accent) !important;
+	font-size: 13px;
+	list-style: none;
+	padding: 12px 16px !important;
+}
+
+.sb-account .woocommerce-error {
+	border-top-color: var(--sb-danger) !important;
+}
+
+.sb-account .woocommerce-message::before,
+.sb-account .woocommerce-info::before {
+	color: var(--sb-accent) !important;
+}
+
+.sb-account .woocommerce-error::before {
+	color: var(--sb-danger) !important;
+}
+
+.sb-account .woocommerce-message .button,
+.sb-account .woocommerce-info .button {
+	float: left;
+}
+
+.sb-account .woocommerce-MyAccount-content h1,
+.sb-account .woocommerce-MyAccount-content h2,
+.sb-account .woocommerce-MyAccount-content h3 {
+	color: var(--sb-text) !important;
+}
+
+.sb-account .woocommerce-MyAccount-content a {
+	color: var(--sb-accent-2) !important;
+	text-decoration: none;
+}
+
+.sb-account .woocommerce-MyAccount-content a:hover {
+	text-decoration: underline;
+}
+
+/* ALL selects inside the panel: custom chevron, no native chrome */
+.sb-account select {
+	cursor: pointer !important;
+	background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%238b91a7' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") !important;
+	background-repeat: no-repeat !important;
+	background-position: left 12px center !important;
+	padding-left: 34px !important;
+}
+
+.sb-account select option,
+.sb-account select optgroup {
+	background: var(--sb-card);
+	color: var(--sb-text);
+}
+
+/* Select2 themed to the panel */
+.sb-account .select2-container--default .select2-selection--single {
+	background: var(--sb-bg-2) !important;
+	border: 1px solid var(--sb-border) !important;
+	border-radius: 10px !important;
+	height: 42px !important;
+}
+
+.sb-account .select2-container--default .select2-selection--single .select2-selection__rendered {
+	color: var(--sb-text) !important;
+	line-height: 40px !important;
+	padding: 0 12px;
+}
+
+.sb-account .select2-container--default .select2-selection--single .select2-selection__arrow {
+	height: 40px;
+	width: 26px;
+}
+
+.sb-account .select2-container--default .select2-selection--single .select2-selection__arrow b {
+	display: none;
+}
+
+.sb-account .select2-container--default .select2-selection--single .select2-selection__arrow::after {
+	content: "\f078";
+	font-family: "Font Awesome 6 Free";
+	font-weight: 900;
+	font-size: 10px;
+	color: var(--sb-muted);
+	position: absolute;
+	top: 50%;
+	left: 8px;
+	transform: translateY(-50%);
+}
+
+.sb-account .select2-dropdown {
+	background: var(--sb-card) !important;
+	border: 1px solid var(--sb-border) !important;
+	border-radius: 10px !important;
+}
+
+.sb-account .select2-container--default .select2-results__option--highlighted[aria-selected],
+.sb-account .select2-container--default .select2-results__option[aria-selected="true"] {
+	background: rgba(var(--sb-accent-rgb), 0.15) !important;
+	color: var(--sb-text) !important;
+}
+
+.sb-account .select2-container--default .select2-results__option {
+	color: var(--sb-text);
+	background: var(--sb-card);
+}
+
+.sb-account .select2-search--dropdown .select2-search__field {
+	background: var(--sb-bg-2) !important;
+	color: var(--sb-text) !important;
+	border: 1px solid var(--sb-border) !important;
+	border-radius: 8px !important;
+}
+
+/* Downloads action button */
+.sb-account .woocommerce-MyAccount-content .woocommerce-MyAccount-downloads-file button {
+	background: transparent;
+	border: 1px solid var(--sb-glass-border);
+	color: var(--sb-text);
+	border-radius: 8px;
+	cursor: pointer;
+}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 1200px) {
+	.sb-account__kpis {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+	.sb-account__kpi--featured {
+		grid-row: span 2;
+	}
+}
+
+@media (max-width: 992px) {
+	.sb-account__kpis {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+	.sb-account__grid {
+		grid-template-columns: 1fr;
+	}
+	.sb-account__shell {
+		grid-template-columns: 216px minmax(0, 1fr);
+	}
+	.sb-account__kpi--featured {
+		grid-row: auto;
+		min-height: 0;
+	}
+	.sb-account__kpi--featured .sb-account__kpi-value {
+		font-size: 28px;
+	}
+}
+
+@media (max-width: 782px) {
+	.sb-account {
+		padding: 14px;
+		border-radius: 0;
+		margin: 10px 0 20px;
+	}
+
+	.sb-account__fab {
+		display: inline-flex;
+	}
+
+	.sb-account__shell {
+		grid-template-columns: 1fr;
+	}
+
+	/* Sidebar becomes an off-canvas glass drawer from the right */
+	.sb-account__side {
+		position: fixed;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		width: min(300px, 84vw);
+		border-radius: 0;
+		z-index: 99990;
+		transform: translateX(105%);
+		transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+		overflow-y: auto;
+		max-height: 100vh;
+		backdrop-filter: blur(24px) saturate(150%);
+		-webkit-backdrop-filter: blur(24px) saturate(150%);
+	}
+
+	.sb-account.is-drawer-open .sb-account__side {
+		transform: translateX(0);
+		box-shadow: -20px 0 60px rgba(0, 0, 0, 0.4);
+	}
+
+	.sb-account__scrim {
+		position: fixed;
+		inset: 0;
+		background: rgba(0, 0, 0, 0.55);
+		z-index: 99980;
+		animation: sb-acc-fade 0.25s ease;
+	}
+
+	@keyframes sb-acc-fade {
+		from { opacity: 0; }
+		to { opacity: 1; }
+	}
+
+	.sb-account__hero {
+		padding: 18px;
+	}
+
+	.sb-account__mini-grid,
+	.sb-account__quick {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 480px) {
+	.sb-account {
+		padding: 12px;
+	}
+	.sb-account__kpis {
+		grid-template-columns: 1fr 1fr;
+		gap: 10px;
+	}
+	.sb-account__kpi--featured {
+		grid-column: 1 / -1;
+	}
+	.sb-account__kpi--featured .sb-account__kpi-value {
+		font-size: 24px;
+	}
+	.sb-account__kpi-value {
+		font-size: 21px;
+	}
+	.sb-account__hero h2 {
+		font-size: 18px;
+	}
+	.sb-account__quick,
+	.sb-account__mini-grid {
+		gap: 8px;
+	}
+	.sb-account__card {
+		padding: 14px;
+	}
+	.sb-account__brand strong {
+		max-width: 110px;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.sb-account,
+	.sb-account__side,
+	.sb-account__hero,
+	.sb-account__kpi,
+	.sb-account__card,
+	.sb-account__scrim {
+		animation: none !important;
+	}
+	.sb-account__hero::after,
+	.sb-account__kpi--featured::after {
+		animation: none !important;
+	}
+	.sb-account__side,
+	.sb-account__kpi,
+	.sb-account__quick-item,
+	.sb-account__mini,
+	.sb-account__nav a {
+		transition: none !important;
+	}
+}

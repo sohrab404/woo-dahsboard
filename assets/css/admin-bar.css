@@ -1,0 +1,42 @@
+#wpadminbar .salesbin-ab-node > .ab-item {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+#wpadminbar .salesbin-ab-label {
+	font-weight: 600;
+}
+
+#wpadminbar .salesbin-ab-stats {
+	opacity: 0.85;
+	font-size: 11px;
+}
+
+.salesbin-ab-flyout {
+	position: absolute;
+	top: 32px;
+	left: 0;
+	min-width: 260px;
+	background: #141722;
+	color: #e8eaf2;
+	border: 1px solid rgba(255, 255, 255, 0.08);
+	border-radius: 12px;
+	padding: 12px 14px;
+	box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+	z-index: 99999;
+	text-align: right;
+	font-family: Tahoma, sans-serif;
+	direction: rtl;
+}
+
+.salesbin-ab-flyout svg {
+	width: 100%;
+	height: 48px;
+	margin: 8px 0;
+}
+
+.salesbin-ab-flyout a {
+	color: #a78bfa;
+	text-decoration: none;
+}

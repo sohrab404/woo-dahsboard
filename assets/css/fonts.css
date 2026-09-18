@@ -1,0 +1,34 @@
+/* Woodesh bundled Persian fonts — served locally, no CDN (works behind Iranian filtering).
+   Source files: assets/fonts/<slug>/... */
+
+@font-face {
+	font-family: "SB Yekan Bakh";
+	src: url("../fonts/yekanbakh/woff2/YekanBakh-Regular.woff2") format("woff2");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "SB Iran Yekan";
+	src: url("../fonts/iranyekan/woff2/Yekan.woff2") format("woff2");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "SB IranSans";
+	src: url("../fonts/iransans/woff2/IRANSansX-Regular.woff2") format("woff2");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "SB Peyda";
+	src: url("../fonts/peyda/ttf/Peyda-Regular.ttf") format("truetype");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}

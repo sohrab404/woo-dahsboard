@@ -1,0 +1,1168 @@
+/* Salesbin dashboard — namespaced. Do not style WP chrome globally. */
+.salesbin-app,
+.salesbin-app * {
+	box-sizing: border-box;
+}
+
+/* ============================================================
+   THEME ENGINE
+   Defaults (woodesh dark) live on body; [data-sb-theme][data-sb-mode]
+   blocks override them. Every plugin surface sets these via theme.js.
+   ============================================================ */
+body {
+	--sb-bg: #07080c;
+	--sb-bg-2: #0e1018;
+	--sb-card: #141722;
+	--sb-card-2: #1a1e2b;
+	--sb-border: rgba(255, 255, 255, 0.07);
+	--sb-text: #e8eaf2;
+	--sb-muted: #8b91a7;
+	--sb-accent: #8b5cf6;
+	--sb-accent-rgb: 139, 92, 246;
+	--sb-accent-2: #a78bfa;
+	--sb-success: #34d399;
+	--sb-success-rgb: 52, 211, 153;
+	--sb-warn: #fbbf24;
+	--sb-warn-rgb: 251, 191, 36;
+	--sb-danger: #f87171;
+	--sb-danger-rgb: 248, 113, 113;
+	--sb-info: #60a5fa;
+	--sb-info-rgb: 96, 165, 250;
+	--sb-track: rgba(255, 255, 255, 0.06);
+	--sb-card-sheen: rgba(255, 255, 255, 0.03);
+	--sb-chip-active-text: #ffffff;
+	--sb-radius: 16px;
+	--sb-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
+	--sb-glow: 0 8px 24px rgba(var(--sb-accent-rgb), 0.35);
+}
+
+/* --- Woodesh (default purple) --- */
+body[data-sb-theme="woodesh"] {
+	--sb-accent: #8b5cf6;
+	--sb-accent-rgb: 139, 92, 246;
+	--sb-accent-2: #a78bfa;
+}
+body[data-sb-theme="woodesh"][data-sb-mode="light"] {
+	--sb-bg: #f6f7fb;
+	--sb-bg-2: #ffffff;
+	--sb-card: #ffffff;
+	--sb-card-2: #eef0f7;
+	--sb-border: rgba(15, 18, 35, 0.10);
+	--sb-text: #171a26;
+	--sb-muted: #5b6172;
+	--sb-accent: #7c3aed;
+	--sb-accent-rgb: 124, 58, 237;
+	--sb-accent-2: #6d28d9;
+	--sb-success: #059669;
+	--sb-success-rgb: 5, 150, 105;
+	--sb-warn: #b45309;
+	--sb-warn-rgb: 180, 83, 9;
+	--sb-danger: #dc2626;
+	--sb-danger-rgb: 220, 38, 38;
+	--sb-info: #2563eb;
+	--sb-info-rgb: 37, 99, 235;
+	--sb-track: rgba(15, 18, 35, 0.08);
+	--sb-card-sheen: rgba(124, 58, 237, 0.04);
+	--sb-shadow: 0 10px 40px rgba(23, 26, 38, 0.10);
+	--sb-glow: 0 8px 24px rgba(124, 58, 237, 0.22);
+}
+
+/* --- Ocean --- */
+body[data-sb-theme="ocean"] {
+	--sb-bg: #060a12;
+	--sb-bg-2: #0b1220;
+	--sb-card: #0f1726;
+	--sb-card-2: #14203a;
+	--sb-border: rgba(125, 211, 252, 0.10);
+	--sb-text: #e6f0fa;
+	--sb-muted: #7d93ad;
+	--sb-accent: #0ea5e9;
+	--sb-accent-rgb: 14, 165, 233;
+	--sb-accent-2: #38bdf8;
+	--sb-info: #22d3ee;
+	--sb-info-rgb: 34, 211, 238;
+}
+body[data-sb-theme="ocean"][data-sb-mode="light"] {
+	--sb-bg: #f2f7fc;
+	--sb-bg-2: #ffffff;
+	--sb-card: #ffffff;
+	--sb-card-2: #e6eef6;
+	--sb-border: rgba(2, 82, 120, 0.12);
+	--sb-text: #0f2436;
+	--sb-muted: #557086;
+	--sb-accent: #0284c7;
+	--sb-accent-rgb: 2, 132, 199;
+	--sb-accent-2: #0369a1;
+	--sb-success: #059669;
+	--sb-success-rgb: 5, 150, 105;
+	--sb-warn: #b45309;
+	--sb-warn-rgb: 180, 83, 9;
+	--sb-danger: #dc2626;
+	--sb-danger-rgb: 220, 38, 38;
+	--sb-info: #0e7490;
+	--sb-info-rgb: 14, 116, 144;
+	--sb-track: rgba(2, 82, 120, 0.08);
+	--sb-card-sheen: rgba(2, 132, 199, 0.04);
+	--sb-shadow: 0 10px 40px rgba(15, 36, 54, 0.10);
+	--sb-glow: 0 8px 24px rgba(2, 132, 199, 0.22);
+}
+
+/* --- Emerald --- */
+body[data-sb-theme="emerald"] {
+	--sb-bg: #050b08;
+	--sb-bg-2: #0a1410;
+	--sb-card: #0c1712;
+	--sb-card-2: #10231b;
+	--sb-border: rgba(52, 211, 153, 0.10);
+	--sb-text: #e7f5ee;
+	--sb-muted: #7fa08e;
+	--sb-accent: #10b981;
+	--sb-accent-rgb: 16, 185, 129;
+	--sb-accent-2: #34d399;
+	--sb-info: #2dd4bf;
+	--sb-info-rgb: 45, 212, 191;
+}
+body[data-sb-theme="emerald"][data-sb-mode="light"] {
+	--sb-bg: #f2faf6;
+	--sb-bg-2: #ffffff;
+	--sb-card: #ffffff;
+	--sb-card-2: #e3f2ea;
+	--sb-border: rgba(4, 88, 55, 0.12);
+	--sb-text: #0b2417;
+	--sb-muted: #4f6f5e;
+	--sb-accent: #059669;
+	--sb-accent-rgb: 5, 150, 105;
+	--sb-accent-2: #047857;
+	--sb-warn: #b45309;
+	--sb-warn-rgb: 180, 83, 9;
+	--sb-danger: #dc2626;
+	--sb-danger-rgb: 220, 38, 38;
+	--sb-info: #0d9488;
+	--sb-info-rgb: 13, 148, 136;
+	--sb-track: rgba(4, 88, 55, 0.08);
+	--sb-card-sheen: rgba(5, 150, 105, 0.04);
+	--sb-shadow: 0 10px 40px rgba(11, 36, 23, 0.10);
+	--sb-glow: 0 8px 24px rgba(5, 150, 105, 0.22);
+}
+
+/* --- Rose --- */
+body[data-sb-theme="rose"] {
+	--sb-bg: #0d060a;
+	--sb-bg-2: #150a10;
+	--sb-card: #1c0f16;
+	--sb-card-2: #241420;
+	--sb-border: rgba(251, 113, 133, 0.10);
+	--sb-text: #f9e8ec;
+	--sb-muted: #a3798a;
+	--sb-accent: #f43f5e;
+	--sb-accent-rgb: 244, 63, 94;
+	--sb-accent-2: #fb7185;
+	--sb-info: #f472b6;
+	--sb-info-rgb: 244, 114, 182;
+}
+body[data-sb-theme="rose"][data-sb-mode="light"] {
+	--sb-bg: #fbf4f6;
+	--sb-bg-2: #ffffff;
+	--sb-card: #ffffff;
+	--sb-card-2: #f6e6ea;
+	--sb-border: rgba(159, 18, 57, 0.12);
+	--sb-text: #2a0e18;
+	--sb-muted: #7a5462;
+	--sb-accent: #e11d48;
+	--sb-accent-rgb: 225, 29, 72;
+	--sb-accent-2: #be123c;
+	--sb-warn: #b45309;
+	--sb-warn-rgb: 180, 83, 9;
+	--sb-danger: #dc2626;
+	--sb-danger-rgb: 220, 38, 38;
+	--sb-info: #be185d;
+	--sb-info-rgb: 190, 24, 93;
+	--sb-track: rgba(159, 18, 57, 0.08);
+	--sb-card-sheen: rgba(225, 29, 72, 0.04);
+	--sb-shadow: 0 10px 40px rgba(42, 14, 24, 0.10);
+	--sb-glow: 0 8px 24px rgba(225, 29, 72, 0.22);
+}
+
+/* --- Sunset --- */
+body[data-sb-theme="sunset"] {
+	--sb-bg: #0c0805;
+	--sb-bg-2: #14100a;
+	--sb-card: #1b120a;
+	--sb-card-2: #241810;
+	--sb-border: rgba(251, 191, 36, 0.10);
+	--sb-text: #f9f0e4;
+	--sb-muted: #a78f75;
+	--sb-accent: #f59e0b;
+	--sb-accent-rgb: 245, 158, 11;
+	--sb-accent-2: #fbbf24;
+	--sb-info: #fb923c;
+	--sb-info-rgb: 251, 146, 60;
+}
+body[data-sb-theme="sunset"][data-sb-mode="light"] {
+	--sb-bg: #fbf7f0;
+	--sb-bg-2: #ffffff;
+	--sb-card: #ffffff;
+	--sb-card-2: #f4ead9;
+	--sb-border: rgba(146, 92, 6, 0.14);
+	--sb-text: #2b1d0c;
+	--sb-muted: #7d6a4f;
+	--sb-accent: #d97706;
+	--sb-accent-rgb: 217, 119, 6;
+	--sb-accent-2: #b45309;
+	--sb-warn: #b45309;
+	--sb-warn-rgb: 180, 83, 9;
+	--sb-danger: #dc2626;
+	--sb-danger-rgb: 220, 38, 38;
+	--sb-info: #c2410c;
+	--sb-info-rgb: 194, 65, 12;
+	--sb-track: rgba(146, 92, 6, 0.10);
+	--sb-card-sheen: rgba(217, 119, 6, 0.05);
+	--sb-shadow: 0 10px 40px rgba(43, 29, 12, 0.10);
+	--sb-glow: 0 8px 24px rgba(217, 119, 6, 0.24);
+}
+
+/* --- Graphite --- */
+body[data-sb-theme="graphite"] {
+	--sb-bg: #08090b;
+	--sb-bg-2: #101216;
+	--sb-card: #131519;
+	--sb-card-2: #1b1e24;
+	--sb-border: rgba(255, 255, 255, 0.08);
+	--sb-text: #eceef2;
+	--sb-muted: #8a8f99;
+	--sb-accent: #9ca3af;
+	--sb-accent-rgb: 156, 163, 175;
+	--sb-accent-2: #d1d5db;
+	--sb-info: #93c5fd;
+	--sb-info-rgb: 147, 197, 253;
+}
+body[data-sb-theme="graphite"][data-sb-mode="light"] {
+	--sb-bg: #f4f5f7;
+	--sb-bg-2: #ffffff;
+	--sb-card: #ffffff;
+	--sb-card-2: #eaecf0;
+	--sb-border: rgba(20, 22, 26, 0.12);
+	--sb-text: #14161a;
+	--sb-muted: #5d6470;
+	--sb-accent: #374151;
+	--sb-accent-rgb: 55, 65, 81;
+	--sb-accent-2: #111827;
+	--sb-warn: #b45309;
+	--sb-warn-rgb: 180, 83, 9;
+	--sb-danger: #dc2626;
+	--sb-danger-rgb: 220, 38, 38;
+	--sb-info: #1d4ed8;
+	--sb-info-rgb: 29, 78, 216;
+	--sb-track: rgba(20, 22, 26, 0.08);
+	--sb-card-sheen: rgba(55, 65, 81, 0.04);
+	--sb-shadow: 0 10px 40px rgba(20, 22, 26, 0.10);
+	--sb-glow: 0 8px 24px rgba(55, 65, 81, 0.20);
+}
+
+/* Chrome backgrounds follow the active theme */
+body.toplevel_page_salesbin #wpwrap,
+body.salesbin_page_salesbin-notifications #wpwrap {
+	background: var(--sb-bg, #07080c);
+}
+
+body.toplevel_page_salesbin #wpbody-content > .wrap,
+body.salesbin_page_salesbin-notifications #wpbody-content > .wrap {
+	margin: 0;
+	max-width: none;
+}
+
+.salesbin-app {
+	background:
+		radial-gradient(1200px 500px at 100% -10%, rgba(var(--sb-accent-rgb), 0.16), transparent 55%),
+		radial-gradient(900px 400px at 0% 0%, rgba(var(--sb-info-rgb), 0.08), transparent 50%),
+		var(--sb-bg);
+	color: var(--sb-text);
+	min-height: calc(100vh - 32px);
+	padding: 24px 28px 40px;
+	font-family: var(--sb-font, Tahoma, "Segoe UI", system-ui, sans-serif);
+	line-height: 1.6;
+}
+
+/* DV monogram brand mark (owner logo, coding font) */
+.salesbin-logo--dv {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", Consolas, "Courier New", monospace;
+	font-weight: 700;
+	font-size: 15px;
+	letter-spacing: 0.5px;
+	color: #fff;
+	direction: ltr;
+}
+
+.salesbin-skip {
+	position: absolute;
+	right: -999px;
+}
+
+.salesbin-skip:focus {
+	right: 16px;
+	top: 16px;
+	background: var(--sb-accent);
+	color: #fff;
+	padding: 8px 12px;
+	z-index: 10;
+	border-radius: 8px;
+}
+
+.salesbin-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	gap: 20px;
+	flex-wrap: wrap;
+	margin-bottom: 24px;
+	position: relative;
+	padding-bottom: 18px;
+}
+
+/* Animated beam hairline under the header (Magic UI beam) */
+.salesbin-header::after {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	left: 0;
+	height: 1px;
+	background: linear-gradient(90deg, transparent, rgba(var(--sb-accent-rgb), 0.55), rgba(var(--sb-info-rgb), 0.35), transparent);
+	background-size: 200% 100%;
+	animation: salesbin-beam 6s linear infinite;
+}
+
+@keyframes salesbin-beam {
+	0% { background-position: 100% 0; }
+	100% { background-position: -100% 0; }
+}
+
+.salesbin-brand {
+	display: flex;
+	gap: 14px;
+	align-items: center;
+}
+
+.salesbin-logo {
+	width: 44px;
+	height: 44px;
+	border-radius: 14px;
+	background: linear-gradient(135deg, var(--sb-accent), var(--sb-accent-2));
+	box-shadow: var(--sb-glow);
+	position: relative;
+	overflow: hidden;
+}
+
+.salesbin-logo::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(115deg, transparent 30%, rgba(255, 255, 255, 0.35) 50%, transparent 70%);
+	transform: translateX(-120%);
+	animation: salesbin-logo-shine 5s ease infinite;
+}
+
+@keyframes salesbin-logo-shine {
+	0%, 60% { transform: translateX(-120%); }
+	80%, 100% { transform: translateX(120%); }
+}
+
+.salesbin-title {
+	margin: 0;
+	font-size: 26px;
+	font-weight: 700;
+	letter-spacing: -0.02em;
+	/* Theme-synced: reads the accent pair, so it repaints with every theme/mode. */
+	background: linear-gradient(120deg, var(--sb-accent-2), var(--sb-accent));
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+	color: var(--sb-accent);
+}
+
+.salesbin-subtitle {
+	margin: 2px 0 0;
+	color: var(--sb-muted);
+	font-size: 13px;
+}
+
+/* Native dropdowns (select popups) follow the active mode. */
+body[data-sb-mode="dark"] {
+	color-scheme: dark;
+}
+
+body[data-sb-mode="light"] {
+	color-scheme: light;
+}
+
+.salesbin-toolbar {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	align-items: center;
+}
+
+.salesbin-range {
+	display: flex;
+	background: var(--sb-card);
+	border: 1px solid var(--sb-border);
+	border-radius: 999px;
+	padding: 4px;
+}
+
+.salesbin-chip,
+.salesbin-btn,
+.salesbin-select,
+.salesbin-input {
+	font: inherit;
+}
+
+.salesbin-chip {
+	background: transparent;
+	border: 0;
+	color: var(--sb-muted);
+	padding: 8px 14px;
+	border-radius: 999px;
+	cursor: pointer;
+	transition: background 0.18s ease, color 0.18s ease;
+}
+
+.salesbin-chip:hover,
+.salesbin-chip:focus-visible {
+	color: var(--sb-text);
+	outline: none;
+}
+
+.salesbin-chip.is-active {
+	background: linear-gradient(135deg, var(--sb-accent), var(--sb-accent-2));
+	color: var(--sb-chip-active-text);
+	box-shadow: var(--sb-glow);
+}
+
+.salesbin-btn {
+	background: var(--sb-card);
+	border: 1px solid var(--sb-border);
+	color: var(--sb-text);
+	padding: 9px 16px;
+	border-radius: 12px;
+	cursor: pointer;
+	transition: border-color 0.18s ease, transform 0.18s ease;
+}
+
+.salesbin-btn:hover,
+.salesbin-btn:focus-visible {
+	border-color: var(--sb-accent);
+	outline: none;
+	transform: translateY(-1px);
+}
+
+.salesbin-btn--primary {
+	background: linear-gradient(135deg, var(--sb-accent), var(--sb-accent-2));
+	border-color: transparent;
+	color: var(--sb-chip-active-text);
+	box-shadow: var(--sb-glow);
+	position: relative;
+	overflow: hidden;
+}
+
+.salesbin-btn--primary:hover {
+	filter: brightness(1.08);
+}
+
+/* Shimmer sweep on primary buttons */
+.salesbin-btn--primary::after {
+	content: "";
+	position: absolute;
+	inset: 0;
+	background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, 0.35) 50%, transparent 65%);
+	transform: translateX(-130%);
+	transition: transform 0.6s ease;
+	pointer-events: none;
+}
+
+.salesbin-btn--primary:hover::after {
+	transform: translateX(130%);
+}
+
+.sb-ripple {
+	position: absolute;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.35);
+	transform: scale(0);
+	animation: sb-ripple 0.65s ease-out forwards;
+	pointer-events: none;
+}
+
+@keyframes sb-ripple {
+	to { transform: scale(1); opacity: 0; }
+}
+
+.salesbin-btn--ghost {
+	position: relative;
+}
+
+.salesbin-badge {
+	position: absolute;
+	top: -6px;
+	left: -6px;
+	background: var(--sb-danger);
+	color: #fff;
+	font-size: 11px;
+	min-width: 18px;
+	height: 18px;
+	border-radius: 999px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 5px;
+}
+
+.salesbin-custom {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	align-items: end;
+	background: var(--sb-card);
+	border: 1px solid var(--sb-border);
+	border-radius: var(--sb-radius);
+	padding: 14px 16px;
+	margin-bottom: 18px;
+}
+
+.salesbin-custom[hidden],
+.salesbin-drawer[hidden] {
+	display: none;
+}
+
+.salesbin-input,
+.salesbin-select {
+	background: var(--sb-bg-2);
+	border: 1px solid var(--sb-border);
+	color: var(--sb-text);
+	border-radius: 10px;
+	padding: 8px 10px;
+}
+
+/* Themed select: custom chevron, hover glow, native popup follows color-scheme. */
+.salesbin-select {
+	appearance: none;
+	-webkit-appearance: none;
+	background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%238b91a7' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: left 12px center;
+	padding-left: 34px;
+	cursor: pointer;
+	transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.salesbin-select:hover {
+	border-color: rgba(var(--sb-accent-rgb), 0.55);
+}
+
+.salesbin-select option {
+	background: var(--sb-card);
+	color: var(--sb-text);
+}
+
+.salesbin-input:focus-visible,
+.salesbin-select:focus-visible {
+	outline: 2px solid rgba(var(--sb-accent-rgb), 0.55);
+	outline-offset: 1px;
+}
+
+.salesbin-hint {
+	width: 100%;
+	margin: 0;
+	color: var(--sb-muted);
+	font-size: 12px;
+}
+
+.salesbin-drawer {
+	background: var(--sb-card);
+	border: 1px solid var(--sb-border);
+	border-radius: var(--sb-radius);
+	padding: 16px;
+	margin-bottom: 18px;
+	box-shadow: var(--sb-shadow);
+}
+
+.salesbin-drawer__head {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 10px;
+}
+
+.salesbin-link {
+	background: none;
+	border: 0;
+	color: var(--sb-accent-2);
+	cursor: pointer;
+	text-decoration: none;
+	font: inherit;
+	padding: 0;
+}
+
+.salesbin-link:hover,
+.salesbin-link:focus-visible {
+	text-decoration: underline;
+	outline: none;
+}
+
+/* ============================================================
+   KPI BENTO GRID
+   ============================================================ */
+.salesbin-main {
+	position: relative;
+}
+
+.salesbin-kpis {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 14px;
+	margin-bottom: 18px;
+	position: relative;
+	z-index: 1;
+}
+
+.salesbin-kpi {
+	background: linear-gradient(180deg, var(--sb-card-sheen), transparent 40%), var(--sb-card);
+	border: 1px solid var(--sb-border);
+	border-radius: var(--sb-radius);
+	padding: 16px 18px;
+	min-height: 118px;
+	transition: transform 0.18s ease, border-color 0.18s ease;
+	position: relative;
+	overflow: hidden;
+}
+
+.salesbin-kpi:hover {
+	transform: translateY(-2px);
+	border-color: rgba(var(--sb-accent-rgb), 0.35);
+}
+
+/* Magic card cursor glow (Magic UI "magic card") */
+.sb-magic::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-radius: inherit;
+	background: radial-gradient(340px circle at var(--mx, 50%) var(--my, 50%), rgba(var(--sb-accent-rgb), 0.12), transparent 55%);
+	opacity: 0;
+	transition: opacity 0.25s ease;
+	pointer-events: none;
+	z-index: 0;
+}
+
+.sb-magic:hover::before {
+	opacity: 1;
+}
+
+.sb-magic > * {
+	position: relative;
+	z-index: 1;
+}
+
+/* Featured (net sales) bento tile with animated gradient border */
+.salesbin-kpi--featured {
+	grid-column: span 2;
+	grid-row: span 2;
+	min-height: 250px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.salesbin-kpi--featured::after {
+	content: "";
+	position: absolute;
+	inset: -1px;
+	border-radius: inherit;
+	padding: 1px;
+	background: conic-gradient(from 0deg, transparent 0 30%, rgba(var(--sb-accent-rgb), 0.9) 50%, transparent 70% 100%);
+	-webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+	-webkit-mask-composite: xor;
+	mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+	mask-composite: exclude;
+	animation: sb-border-spin 5s linear infinite;
+	pointer-events: none;
+}
+
+@keyframes sb-border-spin {
+	to { transform: rotate(1turn); }
+}
+
+.salesbin-kpi--featured .salesbin-kpi__label {
+	font-size: 13px;
+}
+
+.salesbin-kpi--featured .salesbin-kpi__value {
+	font-size: 40px;
+	background: linear-gradient(120deg, var(--sb-accent-2), var(--sb-accent));
+	-webkit-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.salesbin-kpi__label {
+	color: var(--sb-muted);
+	font-size: 12px;
+	margin: 0 0 8px;
+}
+
+.salesbin-kpi__value {
+	font-size: 22px;
+	font-weight: 700;
+	margin: 0;
+	letter-spacing: -0.03em;
+}
+
+.salesbin-kpi__meta {
+	margin-top: 10px;
+	display: flex;
+	gap: 8px;
+	align-items: center;
+	font-size: 12px;
+	flex-wrap: wrap;
+}
+
+.salesbin-trend {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 2px 8px;
+	border-radius: 999px;
+	font-weight: 600;
+}
+
+.salesbin-trend.is-up {
+	color: var(--sb-success);
+	background: rgba(var(--sb-success-rgb), 0.12);
+}
+
+.salesbin-trend.is-down {
+	color: var(--sb-danger);
+	background: rgba(var(--sb-danger-rgb), 0.12);
+}
+
+.salesbin-trend.is-new,
+.salesbin-trend.is-warn {
+	color: var(--sb-warn);
+	background: rgba(var(--sb-warn-rgb), 0.12);
+}
+
+.salesbin-grid {
+	display: grid;
+	gap: 14px;
+	margin-bottom: 14px;
+	position: relative;
+	z-index: 1;
+}
+
+.salesbin-grid--2 {
+	grid-template-columns: 1.2fr 1fr;
+}
+
+.salesbin-card {
+	background: var(--sb-card);
+	border: 1px solid var(--sb-border);
+	border-radius: var(--sb-radius);
+	padding: 16px 18px 18px;
+	min-height: 220px;
+	position: relative;
+	overflow: hidden;
+}
+
+.salesbin-card__head {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 10px;
+	flex-wrap: wrap;
+	margin-bottom: 12px;
+}
+
+.salesbin-card__head h2 {
+	margin: 0;
+	font-size: 16px;
+}
+
+.salesbin-inline,
+.salesbin-mini {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+}
+
+.salesbin-chart {
+	height: 280px;
+}
+
+.salesbin-table-wrap {
+	overflow-x: auto;
+}
+
+.salesbin-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 13px;
+}
+
+.salesbin-table th,
+.salesbin-table td {
+	text-align: right;
+	padding: 10px 8px;
+	border-bottom: 1px solid var(--sb-border);
+}
+
+.salesbin-table th {
+	color: var(--sb-muted);
+	font-weight: 600;
+}
+
+.salesbin-status {
+	display: inline-block;
+	padding: 3px 10px;
+	border-radius: 999px;
+	font-size: 12px;
+	background: rgba(var(--sb-info-rgb), 0.12);
+	color: var(--sb-info);
+}
+
+.salesbin-status.is-completed,
+.salesbin-status.is-processing {
+	background: rgba(var(--sb-success-rgb), 0.12);
+	color: var(--sb-success);
+}
+
+.salesbin-status.is-cancelled,
+.salesbin-status.is-failed,
+.salesbin-status.is-refunded {
+	background: rgba(var(--sb-danger-rgb), 0.12);
+	color: var(--sb-danger);
+}
+
+.salesbin-status.is-on-hold,
+.salesbin-status.is-pending {
+	background: rgba(var(--sb-warn-rgb), 0.12);
+	color: var(--sb-warn);
+}
+
+.salesbin-row {
+	display: flex;
+	justify-content: space-between;
+	gap: 10px;
+	padding: 10px 0;
+	border-bottom: 1px solid var(--sb-border);
+	font-size: 13px;
+}
+
+.salesbin-muted {
+	color: var(--sb-muted);
+}
+
+.salesbin-bar {
+	height: 6px;
+	background: var(--sb-track);
+	border-radius: 999px;
+	overflow: hidden;
+	margin-top: 6px;
+}
+
+.salesbin-bar > span {
+	display: block;
+	height: 100%;
+	background: linear-gradient(90deg, var(--sb-accent), var(--sb-accent-2));
+	border-radius: 999px;
+	transition: width 0.6s ease;
+}
+
+.salesbin-heat {
+	display: grid;
+	grid-template-columns: repeat(12, minmax(0, 1fr));
+	gap: 8px;
+}
+
+.salesbin-heat__cell {
+	border-radius: 10px;
+	padding: 10px 6px;
+	text-align: center;
+	border: 1px solid var(--sb-border);
+	font-size: 12px;
+	transition: transform 0.15s ease;
+}
+
+.salesbin-heat__cell:hover {
+	transform: scale(1.05);
+}
+
+.salesbin-progress {
+	height: 12px;
+	background: var(--sb-track);
+	border-radius: 999px;
+	overflow: hidden;
+	margin: 14px 0;
+}
+
+.salesbin-progress > span {
+	display: block;
+	height: 100%;
+	background: linear-gradient(90deg, var(--sb-success), var(--sb-accent));
+	max-width: 100%;
+	border-radius: 999px;
+	transition: width 0.6s ease;
+}
+
+.salesbin-empty,
+.salesbin-error,
+.salesbin-skel {
+	padding: 28px 12px;
+	text-align: center;
+	color: var(--sb-muted);
+}
+
+.salesbin-error {
+	color: var(--sb-danger);
+}
+
+.salesbin-skel {
+	background: linear-gradient(90deg, var(--sb-card-2), var(--sb-card), var(--sb-card-2));
+	background-size: 200% 100%;
+	animation: salesbin-shimmer 1.2s ease infinite;
+	border-radius: 12px;
+	min-height: 72px;
+}
+
+@keyframes salesbin-shimmer {
+	0% { background-position: 100% 0; }
+	100% { background-position: -100% 0; }
+}
+
+.salesbin-note {
+	padding: 10px 0;
+	border-bottom: 1px solid var(--sb-border);
+}
+
+.salesbin-note.is-unread .salesbin-note__title {
+	color: var(--sb-accent-2);
+}
+
+.salesbin-footer {
+	display: flex;
+	justify-content: space-between;
+	gap: 12px;
+	flex-wrap: wrap;
+	margin-top: 10px;
+	color: var(--sb-muted);
+	font-size: 12px;
+	position: relative;
+	z-index: 1;
+}
+
+.salesbin-pager {
+	display: flex;
+	gap: 8px;
+	justify-content: flex-end;
+	margin-top: 12px;
+}
+
+.salesbin-missing {
+	background: var(--sb-card);
+	color: var(--sb-text);
+	padding: 24px;
+	border-radius: var(--sb-radius);
+	border: 1px solid var(--sb-border);
+}
+
+.salesbin-settings {
+	max-width: 860px;
+}
+
+/* Scrollbars inside dark surfaces */
+.salesbin-app ::-webkit-scrollbar,
+.salesbin-settings ::-webkit-scrollbar {
+	width: 10px;
+	height: 10px;
+}
+
+.salesbin-app ::-webkit-scrollbar-thumb,
+.salesbin-settings ::-webkit-scrollbar-thumb {
+	background: var(--sb-card-2);
+	border-radius: 999px;
+	border: 2px solid var(--sb-bg);
+}
+
+@media (max-width: 1200px) {
+	.salesbin-kpis {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+	.salesbin-kpi--featured {
+		grid-column: span 2;
+		grid-row: auto;
+		min-height: 140px;
+	}
+	.salesbin-kpi--featured .salesbin-kpi__value {
+		font-size: 30px;
+	}
+	.salesbin-grid--2 {
+		grid-template-columns: 1fr;
+	}
+}
+
+.salesbin-app[data-layout="home"] .salesbin-full-only {
+	display: none;
+}
+
+.salesbin-app[data-layout="home"] .salesbin-kpis {
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.salesbin-app[data-layout="home"] .salesbin-kpi--featured {
+	grid-column: span 2;
+	grid-row: auto;
+	min-height: 140px;
+}
+
+.salesbin-app[data-layout="home"] .salesbin-kpi--featured .salesbin-kpi__value {
+	font-size: 30px;
+}
+
+.salesbin-app[data-layout="home"] #salesbin-products-card {
+	grid-column: 1 / -1;
+}
+
+/* Dark admin chrome on plugin screens (theme-aware accents) */
+body.salesbin-dark-admin #wpwrap,
+body.salesbin-dark-admin #wpcontent,
+body.salesbin-dark-admin #wpbody,
+body.salesbin-dark-admin #wpbody-content {
+	background: var(--sb-bg, #07080c);
+}
+
+body.salesbin-dark-admin #adminmenuback,
+body.salesbin-dark-admin #adminmenuwrap,
+body.salesbin-dark-admin #adminmenu {
+	background: var(--sb-bg-2, #0b0d14);
+}
+
+body.salesbin-dark-admin[data-sb-mode="light"] #adminmenuback,
+body.salesbin-dark-admin[data-sb-mode="light"] #adminmenuwrap,
+body.salesbin-dark-admin[data-sb-mode="light"] #adminmenu {
+	background: #ffffff;
+	border-left-color: var(--sb-border);
+}
+
+body.salesbin-dark-admin[data-sb-mode="light"] #wpadminbar {
+	background: #ffffff;
+	color: var(--sb-text);
+}
+
+body.salesbin-dark-admin #adminmenu a {
+	color: #c5c9d8;
+}
+
+body.salesbin-dark-admin[data-sb-mode="light"] #adminmenu a {
+	color: #3c4350;
+}
+
+body.salesbin-dark-admin #adminmenu .wp-has-current-submenu .wp-submenu,
+body.salesbin-dark-admin #adminmenu .wp-has-current-submenu.opensub .wp-submenu,
+body.salesbin-dark-admin #adminmenu .wp-submenu {
+	background: var(--sb-card, #10131c);
+}
+
+body.salesbin-dark-admin[data-sb-mode="light"] #adminmenu .wp-submenu {
+	background: #f2f3f7;
+}
+
+body.salesbin-dark-admin #adminmenu li.menu-top:hover,
+body.salesbin-dark-admin #adminmenu li.opensub > a.menu-top,
+body.salesbin-dark-admin #adminmenu li > a.menu-top:focus {
+	background: var(--sb-card-2, #161922);
+	color: #fff;
+}
+
+body.salesbin-dark-admin[data-sb-mode="light"] #adminmenu li.menu-top:hover,
+body.salesbin-dark-admin[data-sb-mode="light"] #adminmenu li.opensub > a.menu-top,
+body.salesbin-dark-admin[data-sb-mode="light"] #adminmenu li > a.menu-top:focus {
+	color: var(--sb-text);
+}
+
+body.salesbin-dark-admin #adminmenu .wp-submenu a:hover,
+body.salesbin-dark-admin #adminmenu .wp-submenu a:focus {
+	background: transparent;
+	color: var(--sb-accent-2);
+}
+
+body.salesbin-dark-admin #adminmenu li.current a.menu-top,
+body.salesbin-dark-admin #adminmenu li.wp-has-current-submenu a.wp-has-current-submenu {
+	background: var(--sb-accent);
+	color: #fff;
+}
+
+body.salesbin-dark-admin #collapse-button {
+	color: #8b91a7;
+}
+
+body.salesbin-dark-admin #wpadminbar {
+	background: #0b0d14;
+}
+
+body.salesbin-dark-admin #footer-thankyou,
+body.salesbin-dark-admin #wpfooter,
+body.salesbin-dark-admin #wpfooter a {
+	color: #8b91a7;
+}
+
+body.salesbin-dark-admin.index-php .wrap {
+	margin: 0;
+	max-width: none;
+}
+
+@media (max-width: 1200px) {
+	.salesbin-app[data-layout="home"] .salesbin-kpis {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+}
+
+@media (max-width: 720px) {
+	.salesbin-app {
+		padding: 16px;
+	}
+	.salesbin-kpis,
+	.salesbin-heat {
+		grid-template-columns: 1fr 1fr;
+	}
+	.salesbin-kpi--featured {
+		grid-column: span 2;
+		grid-row: auto;
+		min-height: 140px;
+	}
+	.salesbin-title {
+		font-size: 20px;
+	}
+	.salesbin-app[data-layout="home"] .salesbin-kpis {
+		grid-template-columns: 1fr;
+	}
+	.salesbin-app[data-layout="home"] .salesbin-kpi--featured {
+		grid-column: span 1;
+	}
+}
+
+/* Reduced motion: disable all ambient animation */
+@media (prefers-reduced-motion: reduce) {
+	.salesbin-header::after,
+	.salesbin-logo::after,
+	.salesbin-kpi--featured::after,
+	.sb-ripple,
+	.salesbin-skel {
+		animation: none !important;
+	}
+	.salesbin-kpi,
+	.salesbin-heat__cell,
+	.salesbin-btn {
+		transition: none !important;
+	}
+}
